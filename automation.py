@@ -123,7 +123,11 @@ class ZaloAutomation:
         def _cb(h, _):
             if not win32gui.IsWindowVisible(h):
                 return
-            if "Zalo" not in win32gui.GetWindowText(h):
+            title = win32gui.GetWindowText(h)
+            if "Zalo" not in title:
+                return
+            # Exclude web-browser tabs that happen to have "Zalo" in their title
+            if "Google Chrome" in title or "Microsoft Edge" in title or "Firefox" in title:
                 return
             try:
                 _, pid = win32process.GetWindowThreadProcessId(h)
