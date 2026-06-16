@@ -1,0 +1,38 @@
+{
+  "prefix": "KH",
+  "start_number": 566,
+  "contact_number": 10,
+  "action_delay": 1.5,
+  "profile_delay": 1.4,
+  "scroll_delay": 3.0,
+  "scroll_amount": 5,
+  "scroll_speed": 6.0,
+  "scroll_time": 10.0,
+  "scroll_pixels_per_sec": 1333.3333333333335,
+  "use_smart_scroll": true,
+  "max_retries": 3,
+  "dry_run": false,
+  "background_mode": true,
+  "stop_on_error": false,
+  "log_file": "zalo_rename_log.csv",
+  "match_confidence": 0.72,
+  "contact_region": [
+    65,
+    184,
+    342,
+    1219
+  ],
+  "contact1_rel": [
+    177,
+    231
+  ],
+  "contact2_rel": [
+    185,
+    323
+  ],
+  "contact_item_height": 92,
+  "nickname_label_rel": [
+    988,
+    199
+  ]
+}

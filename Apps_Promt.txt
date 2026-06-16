@@ -1,0 +1,162 @@
+Build a Windows desktop automation application that automatically renames Zalo contacts displayed in Zalo PC.
+
+## Context
+
+I will manually search and filter the contacts inside Zalo PC before starting the automation.
+
+The application does NOT need to search for contacts. It only needs to process the contacts currently displayed in the Zalo contact/message list.
+
+## Goal
+
+Automatically prepend a sequential identifier to each contact name using the format:
+
+* KH1 John Smith
+* KH2 Jane Doe
+* KH3 Michael Brown
+* KH4 ...
+
+The numbering must increase continuously until all contacts in the filtered list have been processed.
+
+## Required Features
+
+### Contact Processing
+
+1. Start with the first visible contact in the Zalo contact list.
+
+2. Open the contact profile.
+
+3. Edit the contact nickname/display name.
+
+4. Add a prefix in the format:
+
+   KH + sequential number
+
+   Examples:
+
+   * KH1 John Smith
+   * KH2 Jane Doe
+   * KH3 Michael Brown
+
+5. Preserve the original name and only prepend the prefix.
+
+6. Save the change.
+
+7. Continue to the next contact.
+
+### Automatic Scrolling
+
+1. After all currently visible contacts have been processed, automatically scroll down the contact list.
+2. Detect newly visible contacts.
+3. Continue processing them using the next available number.
+4. Repeat until the bottom of the list is reached and no new contacts appear.
+
+### Duplicate Protection
+
+1. Detect contacts that have already been processed.
+
+2. Skip contacts whose names already begin with:
+
+   KH<number>
+
+   Examples:
+
+   * KH1 John Smith
+   * KH25 Jane Doe
+
+3. Maintain a local record of processed contacts to avoid duplicate processing.
+
+### Configuration
+
+Allow the user to configure:
+
+* Prefix text (default: KH)
+* Starting number (default: 1)
+* Delay between actions
+* Scroll speed
+* Maximum retries
+* Dry-run mode (preview only)
+* Stop on error option
+
+### Controls
+
+Provide the following buttons:
+
+* Start
+* Pause
+* Resume
+* Stop
+
+### Logging
+
+Record every action into a CSV or Excel file:
+
+Columns:
+
+* Sequence Number
+* Original Name
+* New Name
+* Status
+* Timestamp
+
+Example:
+
+| No | Original Name | New Name       | Status  |
+| -- | ------------- | -------------- | ------- |
+| 1  | John Smith    | KH1 John Smith | Success |
+| 2  | Jane Doe      | KH2 Jane Doe   | Success |
+
+## Technical Requirements
+
+### Platform
+
+* Windows 10 / Windows 11
+* Zalo PC desktop application
+
+### Programming Language
+
+Prefer Python.
+
+### Recommended Libraries
+
+* pyautogui
+* pywinauto
+* keyboard
+* OpenCV
+* pytesseract (if OCR is required)
+* pandas
+* tkinter or PyQt
+
+### Automation Strategy
+
+The application should interact with the Zalo PC user interface exactly like a human user:
+
+* Click contacts
+* Open profile windows
+* Edit nicknames
+* Save changes
+* Scroll contact lists
+
+Do NOT use unofficial Zalo APIs.
+
+## Reliability Requirements
+
+1. Detect whether a contact was successfully renamed.
+2. Retry failed operations.
+3. Handle UI loading delays.
+4. Prevent processing the same contact twice.
+5. Allow safe interruption and resumption.
+
+## Expected Deliverables
+
+Please provide:
+
+1. Complete application architecture.
+2. Detailed workflow diagram.
+3. Python source code.
+4. UI design.
+5. Error handling strategy.
+6. Contact detection strategy.
+7. Auto-scroll implementation.
+8. Processed-contact tracking mechanism.
+9. CSV/Excel logging implementation.
+10. Step-by-step instructions for running the application on Windows.
