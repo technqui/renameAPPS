@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Claude Code
+.claude/
+
+# Logs & data output
+zalo_rename_log.csv
+zalo_rename_log.xlsx
+processed_contacts.json
+
+# Debug & diagnostic screenshots
+debug_*.png
+diag*.png
+step*.png
+test_screenshot.png
+test_filter_fingerprint.png
+
+# Installers / binaries
+*.exe
+
+# OS
+Thumbs.db
+desktop.ini
