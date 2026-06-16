@@ -782,8 +782,11 @@ class ZaloAutomation:
         if self.cfg.nickname_label_rel:
             lx = zx + self.cfg.nickname_label_rel[0]
             ly = zy + self.cfg.nickname_label_rel[1]
-            self.log(f"  Scanning from label ({lx},{ly})")
-            result = _scan_right(ly, lx, zx2 - 5, step=5)
+            # Limit to 300px right of label; pencil is always nearby.
+            # Scanning all the way to zx2 risks clicking chat-header buttons.
+            scan_end = min(lx + 300, zx2 - 5)
+            self.log(f"  Scanning from label ({lx},{ly}) to x={scan_end}")
+            result = _scan_right(ly, lx, scan_end, step=5)
             if result is not None:
                 return result
             self.log("  Pencil not found from calibrated position")
@@ -841,15 +844,30 @@ class ZaloAutomation:
                 self._bg_click(cx, row_y)
                 time.sleep(self.cfg.action_delay)
 
-                # ── Step 2: Find and activate nickname edit ────────────────────
-                current = self._find_and_activate_nickname_edit()
-                if current is None:
+                # ── Step 2: Ensure profile panel is open, then activate edit ──
+                # Check if the nickname label is visible before scanning.
+                # If TPL_NICK_LBL is captured use it; otherwise fall back to
+                # the label position probe (one click at the calibrated spot).
+                panel_open = False
+                if self.zalo_rect and self.cfg.nickname_label_rel:
+                    panel_rgn = self._zalo_region(0.63, 0.05, 1.00, 0.55)
+                    if os.path.exists(TPL_NICK_LBL) and panel_rgn:
+                        panel_open = find_template(
+                            TPL_NICK_LBL, panel_rgn, self.cfg.match_confidence
+                        ) is not None
+                    else:
+                        # No template: assume panel is open if this is not the
+                        # first attempt (panel stays open between contacts).
+                        panel_open = (attempt > 1)
+
+                if not panel_open:
                     info = self._find_info_btn()
                     if info:
-                        self.log("  Profile panel closed — opening it...")
+                        self.log("  Opening profile panel...")
                         self._bg_click(*info)
                         time.sleep(self.cfg.profile_delay)
-                        current = self._find_and_activate_nickname_edit()
+
+                current = self._find_and_activate_nickname_edit()
 
                 if current is None:
                     self.log(f"  Could not activate nickname edit (attempt {attempt})")
